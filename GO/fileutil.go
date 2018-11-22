@@ -7,6 +7,21 @@ import (
     "log"
 )
 
+func loadDbProperties()  (username, password, host string){
+    username = ""
+    password = ""
+    host = ""
+    props, err := ReadPropertiesFile("db.properties")
+    //fmt.Printf("hello, world\n")
+    if(err != nil || err == nil){
+        host = props["host"]
+        username = props["db_user"]
+        password = props["db_password"]
+    }
+
+    return
+}
+
 type AppConfigProperties map[string]string
 
 func ReadPropertiesFile(filename string) (AppConfigProperties, error) {
