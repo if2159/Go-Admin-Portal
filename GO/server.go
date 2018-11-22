@@ -12,7 +12,7 @@ func main() {
     http.HandleFunc("/Login", Login)
     absPath, _ := filepath.Abs("../HTML")
     http.Handle("/", http.FileServer(http.Dir(absPath)))
-    http.ListenAndServe(":8080", nil)
+    http.ListenAndServe(":80", nil)
 }
 
 func Login(rw http.ResponseWriter, r *http.Request) {
