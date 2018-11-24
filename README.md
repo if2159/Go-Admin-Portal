@@ -1,6 +1,6 @@
 # Go-Admin-Portal
 
-<h1>Dependencies:</h1>
+<h3>Dependencies:</h3>
 <br>
 	go get -v github.com/go-sql-driver/mysql
 <br>
