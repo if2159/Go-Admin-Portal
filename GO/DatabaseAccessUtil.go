@@ -18,63 +18,6 @@ type User struct {
 }
 
 
-/*
-func main() {
-
-    user, password, host := loadDbProperties()
-    con, err := sql.Open("mysql", user + ":@" + password + "@tcp(" + host + ":3306)/portal?charset=utf8")
-    checkErr(err)
-
-
-
-    pass := []byte("MyDarkSecret")
-
-   // Hashing the password with the default cost of 10
-    hashedPassword, err := bcrypt.GenerateFromPassword(pass, bcrypt.DefaultCost)
-
-    rows, err := con.Query("UPDATE USERS SET HASHED_PASS = ? WHERE USERNAME=?", hashedPassword, "IAN")
-    checkErr(err)
-
-
-    for rows.Next() {
-        var uid string
-        var username string
-        var role_id int
-        var hashed_pass string
-        err = rows.Scan(&uid, &username, &role_id, &hashed_pass)
-        checkErr(err)
-        fmt.Println(uid)
-        fmt.Println(username)
-        fmt.Println(role_id)
-        fmt.Println(hashed_pass)
-    }
-
-    con.Close()
-
-    fmt.Println("Done with DB")
-
-    pass := []byte("MyDarkSecret")
-
-    // Hashing the password with the default cost of 10
-    hashedPassword, err := bcrypt.GenerateFromPassword(pass, bcrypt.DefaultCost)
-    if err != nil {
-        panic(err)
-    }
-    fmt.Println(string(hashedPassword))
-
-
-    // Comparing the password with the hash
-    err = bcrypt.CompareHashAndPassword(hashedPassword, pass)
-    pass := []byte("MyDarkSecret1")
-
-    if (comparePassword("IAN", pass)) {
-        fmt.Println("Right Password!")
-    } else{
-        fmt.Println("Wrong password")
-    }
-
-}
-*/
 func getStoredUser(username string) (User){
     startConnection()
     rows, err := con.Query("SELECT UID, USERNAME, ROLE_ID, HASHED_PASS FROM USERS WHERE USERNAME = ?", username)
@@ -104,6 +47,21 @@ func startConnection(){
     fmt.Println("startEnd")
 }
 
+func CheckSessionId(username, sessionId string) (bool){
+    startConnection()
+    rows, err := con.Query("SELECT SESSION_ID, UID FROM portal.SESSIONS WHERE UID=(SELECT UID FROM USERS WHERE USERNAME=?) AND SESSION_ID=?", username, sessionId);
+    checkErr(err)
+
+    for rows.Next() {
+        var sessionId string
+        var uid string
+        err = rows.Scan(&sessionId, &uid)
+        checkErr(err)
+
+        return true
+    }
+    return false
+}
 
 func updatePassword(){
 
@@ -125,25 +83,21 @@ func comparePassword(username string, password []byte) (bool){
 }
 
 func createSessionId(username string) (string){
+    fmt.Println("Creating Session ID")
     startConnection()
-    fmt.Println("11")
 
     con.Query("INSERT INTO SESSIONS(UID, SESSION_ID) VALUES((SELECT UID FROM USERS WHERE USERNAME=?), UUID())", username)
     rows, err := con.Query("SELECT SESSION_ID, UID FROM portal.SESSIONS WHERE UID=(SELECT UID FROM USERS WHERE USERNAME=?) AND LOGIN_TIME = (SELECT MAX(LOGIN_TIME) FROM SESSIONS WHERE UID = (SELECT UID FROM USERS WHERE USERNAME=?))", username, username);
     checkErr(err)
 
-    fmt.Println("12")
     for rows.Next() {
-        fmt.Println("15")
         var sessionId string
         var uid string
         err = rows.Scan(&sessionId, &uid)
         checkErr(err)
-        fmt.Println("sessionId")
 
         return sessionId
     }
-fmt.Println("14")
     return ""
 }
 
