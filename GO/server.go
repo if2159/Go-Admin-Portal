@@ -14,6 +14,7 @@ func main() {
     http.HandleFunc("/Login", Login)
     absPath, _ := filepath.Abs("../HTML")
     http.HandleFunc("/login.html", LoadLogin)
+    http.HandleFunc("/ChangeUserRole.html", LoadChangeUserRole)
     http.Handle("/", http.FileServer(http.Dir(absPath)))
     http.ListenAndServe(port, nil)
 }

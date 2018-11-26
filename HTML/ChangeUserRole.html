@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+    <h1>{{.PageTitle}}</h1>
+    <ul>
+        <form action="/action_page.php" method="get">
+        {{range .UserRoles}}
+
+            {{if .HasAccess}}
+                <li>
+                    <input type="checkbox" checked="checked" value="{{.RoleName}}"> {{.RoleName}}
+                    </li>
+            {{else}}
+                <li>
+                    <input type="checkbox" value="{{.RoleName}}"> {{.RoleName}}
+                </li>
+            {{end}}
+
+
+        {{end}}
+        <input type="submit" value="Submit"/>
+        </form>
+    </ul>
+
+</body>
+</html>

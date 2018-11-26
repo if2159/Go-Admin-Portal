@@ -26,7 +26,7 @@ func Login(rw http.ResponseWriter, r *http.Request) {
 
 func LoadLogin(rw http.ResponseWriter, r *http.Request) {
     loggedIn := CheckCookies(r)
-    newUrl := "AccessForbidden.html"
+    newUrl := "links.html"
     if(loggedIn) {
     http.Redirect(rw, r, newUrl, http.StatusSeeOther)
     }
