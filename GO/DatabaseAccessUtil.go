@@ -113,3 +113,71 @@ func checkErr(err error) {
         panic(err)
     }
 }
+
+func GetRolesForUser(username string) ([]string){
+    var allRoles = GetUserRolesForUser(username)
+    var roles []string
+    for _, role := range allRoles {
+        if(role.HasAccess){
+            roles = append(roles, role.RoleName)
+        }
+    }
+    return roles
+}
+
+func GetAllRoles()([]string){
+    startConnection()
+    rows, err := con.Query("SELECT ROLE_NAME FROM ROLES_REF");
+    checkErr(err)
+
+    var roles []string
+
+    for rows.Next() {
+        var roleName string
+        err = rows.Scan(&roleName)
+        checkErr(err)
+
+        roles = append(roles, roleName)
+    }
+    return roles
+
+}
+
+func AdjustUserRoles(username string, roles []string){
+    startConnection()
+    con.Query("DELETE FROM USER_ROLE_MAP WHERE UID=(SELECT UID FROM USERS WHERE USERNAME=?)", username)
+    for _, role := range roles{
+        fmt.Println(role)
+        _, err := con.Query("INSERT INTO USER_ROLE_MAP(UID, ROLE_ID) VALUES ((SELECT UID FROM USERS WHERE USERNAME=?),(SELECT ID FROM ROLES_REF WHERE ROLE_NAME=?))", username, role)
+        checkErr(err)
+    }
+
+
+}
+
+func GetUserRolesForUser(username string) ([]UserRole){
+    startConnection()
+    rows, err := con.Query("SELECT ID, ROLE_NAME, UID FROM ROLES_REF " +
+	                       "LEFT JOIN " +
+                           "(SELECT UID, ROLE_ID FROM USER_ROLE_MAP WHERE " +
+                           "UID=(SELECT UID FROM USERS WHERE USERNAME=?)) urm " +
+                           "ON urm.ROLE_ID=ID", username);
+    checkErr(err)
+
+    var roles []UserRole
+
+    for rows.Next() {
+        var id int
+        var roleName string
+        var uid sql.NullString
+        err = rows.Scan(&id, &roleName, &uid)
+        checkErr(err)
+        role := UserRole{
+    			RoleName: roleName,
+                HasAccess: uid.Valid,
+            }
+        roles = append(roles, role)
+    }
+    return roles
+
+}

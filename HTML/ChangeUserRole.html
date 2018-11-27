@@ -2,22 +2,18 @@
 <html>
 <body>
 
-    <h1>{{.PageTitle}}</h1>
+    <h1>Changing Roles for: {{.Username}}</h1>
     <ul>
-        <form action="/action_page.php" method="get">
+        <form action="/ChangeUserRole?username={{.Username}}" method="post" name="rolesForm">
         {{range .UserRoles}}
 
             {{if .HasAccess}}
-                <li>
-                    <input type="checkbox" checked="checked" value="{{.RoleName}}"> {{.RoleName}}
-                    </li>
+                    <input type="checkbox" checked="checked" name="{{.RoleName}}"> {{.RoleName}}
             {{else}}
-                <li>
-                    <input type="checkbox" value="{{.RoleName}}"> {{.RoleName}}
-                </li>
+                    <input type="checkbox" name="{{.RoleName}}"> {{.RoleName}}
             {{end}}
 
-
+            <br/>
         {{end}}
         <input type="submit" value="Submit"/>
         </form>
