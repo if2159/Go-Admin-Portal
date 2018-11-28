@@ -1,25 +1,55 @@
-<html>
-  <head>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-  </head>
-  <body>
-    <div class="container">
-      <div class="page-title">
-        <h1>Markdown Generator</h1>
-        <p class="lead">Generate your markdown with Go</p>
-        <hr />
-      </div>
+<!DOCTYPE html>
+<head runat="server">
+    <title>Admin Portal - Login</title>
+    <link href="CSS/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Admin Portal</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-      <form action="/markdown" method="POST">
-        <div class="form-group">
-          <textarea class="form-control" name="body" cols="30" rows="10"></textarea>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="index.html">Home<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="links.html">View Links</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="ChooseUser.html">Change User Role</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="ChooseRole.html">Change Role Links</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="login.html">Sign In</a>
+                </li>
+
+            </ul>
         </div>
 
-        <div class="form-group">
-          <input type="submit" class="btn btn-primary pull-right" />
+    </nav>
+    <body>
+        <div class="container">
+            <h2>Login</h2>
+
+            <form action="/Login" method="post" class="form-left">
+                <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" class="form-control" placeholder="Username">
+            </div>
+            <div class="form-group">
+                <br/>
+                <label>Password</label>
+                <input type="password" name="password" class="form-control" placeholder="Password">
+                <br>
+                <input type="submit" value="Login" class="btn btn-primary">
+            </div>
+            </form>
         </div>
-      </form>
-    </div>
-    <script src="/js/bootstrap.min.js"></script>
-  </body>
+    </body>
 </html>

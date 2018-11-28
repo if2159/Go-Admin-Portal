@@ -1,16 +1,48 @@
 <!DOCTYPE html>
-<html>
+<head runat="server">
+    <title>Admin Portal - Choose Role</title>
+    <link href="CSS/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
+</head>
 <body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Admin Portal</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-<h2>Change a Role's Links:</h2>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="index.html">Home<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="links.html">View Links</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="ChooseUser.html">Change User Role</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="ChooseRole.html">Change Role Links</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="SignOut">Sign Out</a>
+                </li>
 
-<form action="/ChangeRoleLinks.html" method="post">
-  Role to Edit:<br>
-  <input type="text" name="roleName"/>
-  <br/>
-  <br/>
-  <input type="submit" value="Edit Role"/>
-</form>
+            </ul>
+        </div>
 
+    </nav>
+    <div class="container">
+        <h2>Change a Role's Links:</h2>
+
+        <form action="/ChangeRoleLinks.html" method="post">
+              <label>Role to Edit:</label>
+              <input type="text" name="roleName" class="form-control" placeholder="Role Name"/>
+              <br/>
+              <br/>
+              <input type="submit" value="Edit Role"  class="btn btn-primary"/>
+        </form>
+    </div>
 </body>
 </html>

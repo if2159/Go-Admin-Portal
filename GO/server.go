@@ -25,6 +25,9 @@ func main() {
     http.HandleFunc("/ChangeRoleLinks.html", LoadChangeRoleLinks)
 
     http.HandleFunc("/Links.html", LoadLinks)
+    http.HandleFunc("/links.html", LoadLinks)
+
+    http.HandleFunc("/SignOut", DeleteUserCookies)
 
     http.Handle("/", http.FileServer(http.Dir(absPath)))
     http.ListenAndServe(port, nil)

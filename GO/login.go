@@ -82,6 +82,18 @@ func stringInSlice(a string, list []string) bool {
 }
 
 
+func DeleteUserCookies(rw http.ResponseWriter, r *http.Request) {
+    usernameCookie := http.Cookie{Name: "username", Value: "", MaxAge:-1}
+    http.SetCookie(rw, &usernameCookie)
+
+    sessionIdCookie := http.Cookie{Name: "sessionId", Value: "",  MaxAge:-1, HttpOnly:true}
+    http.SetCookie(rw, &sessionIdCookie)
+
+    http.Redirect(rw, r, "login.html", http.StatusSeeOther)
+}
+
+
+
 func createNewSession(username string, rw http.ResponseWriter){
     sessionId := createSessionId(username)
 

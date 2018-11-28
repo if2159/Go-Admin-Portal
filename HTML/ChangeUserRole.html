@@ -1,23 +1,56 @@
 <!DOCTYPE html>
-<html>
+<head runat="server">
+    <title>Admin Portal - Change User Role</title>
+    <link href="CSS/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
+</head>
 <body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Admin Portal</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <h1>Changing Roles for: {{.Username}}</h1>
-    <ul>
-        <form action="/ChangeUserRole?username={{.Username}}" method="post" name="rolesForm">
-        {{range .UserRoles}}
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="index.html">Home<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="links.html">View Links</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="ChooseUser.html">Change User Role</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="ChooseRole.html">Change Role Links</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="SignOut">Sign Out</a>
+                </li>
 
-            {{if .HasAccess}}
-                    <input type="checkbox" checked="checked" name="{{.RoleName}}"> {{.RoleName}}
-            {{else}}
-                    <input type="checkbox" name="{{.RoleName}}"> {{.RoleName}}
+            </ul>
+        </div>
+
+    </nav>
+    <div class="container">
+        <h1>Changing Roles for User: {{.Username}}</h1>
+        <ul>
+            <form action="/ChangeUserRole?username={{.Username}}" method="post" name="rolesForm">
+            {{range .UserRoles}}
+                <div class="form-check">
+                {{if .HasAccess}}
+                        <input type="checkbox" checked="checked" name="{{.RoleName}}">
+                        <label class="form-check-label">{{.RoleName}}</label>
+                {{else}}
+                        <input type="checkbox" name="{{.RoleName}}">
+                        <label class="form-check-label">{{.RoleName}}</label>
+                {{end}}
+                </div>
             {{end}}
-
-            <br/>
-        {{end}}
-        <input type="submit" value="Submit"/>
-        </form>
-    </ul>
-
+            <input type="submit" value="Submit" class="btn btn-primary"/>
+            </form>
+        </ul>
+    </div>
 </body>
 </html>
