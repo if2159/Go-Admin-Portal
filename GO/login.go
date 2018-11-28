@@ -31,7 +31,7 @@ func Login(rw http.ResponseWriter, r *http.Request) {
 
 func LoadLogin(rw http.ResponseWriter, r *http.Request) {
     loggedIn := CheckCookies(r, availableRoles)
-    newUrl := "links.html"
+    newUrl := "Links.html"
     if(loggedIn) {
     http.Redirect(rw, r, newUrl, http.StatusSeeOther)
     }
@@ -39,6 +39,7 @@ func LoadLogin(rw http.ResponseWriter, r *http.Request) {
     checkErr(err)
     rw.Write(dat)
 }
+
 
 
 func CheckCookies(r *http.Request, allowedRoles []string) (bool) {
@@ -55,11 +56,15 @@ func CheckCookies(r *http.Request, allowedRoles []string) (bool) {
     sessionId := sessionIdCookie.Value
 
     if(CheckSessionId(username, sessionId)){
-        var roles = GetRolesForUser(username)
-        for _, role := range roles{
-            if(stringInSlice(role, allowedRoles)){
-                return true
+        if(allowedRoles != nil){
+            var roles = GetRolesForUser(username)
+            for _, role := range roles{
+                if(stringInSlice(role, allowedRoles)){
+                    return true
+                }
             }
+        }else{
+            return true;
         }
     }
     return false
