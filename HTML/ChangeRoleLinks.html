@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+    <h1>Changing Roles for: {{.RoleName}}</h1>
+    <ul>
+        <form action="/ChangeRoleLinks?roleName={{.RoleName}}" method="post" name="rolesForm">
+        {{range .RoleLinks}}
+
+            {{if .HasAccess}}
+                    <input type="checkbox" checked="checked" name="{{.LinkName}}"> {{.LinkName}}
+            {{else}}
+                    <input type="checkbox" name="{{.LinkName}}"> {{.LinkName}}
+            {{end}}
+
+            <br/>
+        {{end}}
+        <input type="submit" value="Submit"/>
+        </form>
+    </ul>
+
+</body>
+</html>
