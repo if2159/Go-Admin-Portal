@@ -16,16 +16,18 @@ func Login(rw http.ResponseWriter, r *http.Request) {
     username := r.FormValue("username")
     password := r.FormValue("password")
 
-    var resp []byte
+    //var resp []byte
 
     if(comparePassword(username, []byte(password))) {
         createNewSession(username, rw);
-        resp = []byte("Success!")
+        //resp = []byte("Success!")
+        http.Redirect(rw, r, "Links.html", http.StatusSeeOther)
     } else{
-        resp = []byte("Fail")
+        //resp = []byte("Bad Login")
+        http.Redirect(rw, r, "login.html", http.StatusSeeOther)
     }
 
-    rw.Write(resp)
+    //rw.Write(resp)
 }
 
 
