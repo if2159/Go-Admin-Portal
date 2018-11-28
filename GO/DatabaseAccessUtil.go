@@ -155,6 +155,64 @@ func AdjustUserRoles(username string, roles []string){
 
 }
 
+func GetAllLinks()([]string){
+    startConnection()
+    rows, err := con.Query("SELECT LINK_NAME FROM LINKS_REF");
+    checkErr(err)
+
+    var links []string
+
+    for rows.Next() {
+        var linkName string
+        err = rows.Scan(&linkName)
+        checkErr(err)
+
+        links = append(links, linkName)
+    }
+    return links
+
+}
+
+func AdjustRoleLinks(roleName string, links []string){
+    startConnection()
+    con.Query("DELETE FROM LINK_ROLE_MAP WHERE ROLE_ID=(SELECT ID FROM ROLES_REF WHERE ROLE_NAME=?)", roleName)
+    for _, link := range links{
+        fmt.Println(link)
+        fmt.Println("Inserting Links")
+        _, err := con.Query("INSERT INTO LINK_ROLE_MAP(ROLE_ID, LINK_ID) VALUES ((SELECT ID FROM ROLES_REF WHERE ROLE_NAME=?), (SELECT ID FROM LINKS_REF WHERE LINK_NAME=?))", roleName, link)
+        checkErr(err)
+    }
+}
+
+func GetRoleLinkForRole(roleName string) ([]RoleLink) {
+    startConnection()
+    rows, err := con.Query("SELECT links.ID, LINK_NAME, ROLE_ID FROM LINKS_REF links " +
+	                           "LEFT JOIN (SELECT ROLE_ID, LINK_ID FROM LINK_ROLE_MAP WHERE " +
+                               "ROLE_ID=(SELECT ID FROM ROLES_REF WHERE ROLE_NAME=?)) lrm " +
+                               "ON lrm.LINK_ID=links.ID", roleName);
+    checkErr(err)
+
+    var links []RoleLink
+
+    for rows.Next() {
+        var id int
+        var linkName string
+        var roleId sql.NullInt64
+        err = rows.Scan(&id, &linkName, &roleId)
+        checkErr(err)
+        fmt.Println(roleName)
+        link := RoleLink{
+    			LinkName: linkName,
+                HasAccess: roleId.Valid,
+            }
+        links = append(links, link)
+    }
+    return links
+
+}
+
+
+
 func GetUserRolesForUser(username string) ([]UserRole){
     startConnection()
     rows, err := con.Query("SELECT ID, ROLE_NAME, UID FROM ROLES_REF " +
