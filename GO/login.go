@@ -6,6 +6,11 @@ import (
     "time"
     "io/ioutil"
 )
+ var availableRoles = []string{
+                            "GUEST",
+                            "ADMIN",
+                            "USER",
+                        }
 
 func Login(rw http.ResponseWriter, r *http.Request) {
     username := r.FormValue("username")
@@ -25,8 +30,8 @@ func Login(rw http.ResponseWriter, r *http.Request) {
 
 
 func LoadLogin(rw http.ResponseWriter, r *http.Request) {
-    loggedIn := CheckCookies(r)
-    newUrl := "AccessForbidden.html"
+    loggedIn := CheckCookies(r, availableRoles)
+    newUrl := "links.html"
     if(loggedIn) {
     http.Redirect(rw, r, newUrl, http.StatusSeeOther)
     }
@@ -36,7 +41,7 @@ func LoadLogin(rw http.ResponseWriter, r *http.Request) {
 }
 
 
-func CheckCookies(r *http.Request) (bool) {
+func CheckCookies(r *http.Request, allowedRoles []string) (bool) {
     usernameCookie, _ := r.Cookie("username")
     if(usernameCookie == nil){
         return false
@@ -49,7 +54,24 @@ func CheckCookies(r *http.Request) (bool) {
     }
     sessionId := sessionIdCookie.Value
 
-    return CheckSessionId(username, sessionId)
+    if(CheckSessionId(username, sessionId)){
+        var roles = GetRolesForUser(username)
+        for _, role := range roles{
+            if(stringInSlice(role, allowedRoles)){
+                return true
+            }
+        }
+    }
+    return false
+}
+
+func stringInSlice(a string, list []string) bool {
+    for _, b := range list {
+        if b == a {
+            return true
+        }
+    }
+    return false
 }
 
 
