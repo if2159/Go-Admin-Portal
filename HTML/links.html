@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+    <h1>Links</h1>
+    <ul>
+        {{range .Links}}
+            <li>
+                <a href={{.URL}} target="_blank">
+                    {{.Name}}
+                </a>
+            </li>
+        {{end}}
+    </ul>
+
+</body>
+</html>

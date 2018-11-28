@@ -16,22 +16,24 @@ func Login(rw http.ResponseWriter, r *http.Request) {
     username := r.FormValue("username")
     password := r.FormValue("password")
 
-    var resp []byte
+    //var resp []byte
 
     if(comparePassword(username, []byte(password))) {
         createNewSession(username, rw);
-        resp = []byte("Success!")
+        //resp = []byte("Success!")
+        http.Redirect(rw, r, "Links.html", http.StatusSeeOther)
     } else{
-        resp = []byte("Fail")
+        //resp = []byte("Bad Login")
+        http.Redirect(rw, r, "login.html", http.StatusSeeOther)
     }
 
-    rw.Write(resp)
+    //rw.Write(resp)
 }
 
 
 func LoadLogin(rw http.ResponseWriter, r *http.Request) {
     loggedIn := CheckCookies(r, availableRoles)
-    newUrl := "links.html"
+    newUrl := "Links.html"
     if(loggedIn) {
     http.Redirect(rw, r, newUrl, http.StatusSeeOther)
     }
@@ -39,6 +41,7 @@ func LoadLogin(rw http.ResponseWriter, r *http.Request) {
     checkErr(err)
     rw.Write(dat)
 }
+
 
 
 func CheckCookies(r *http.Request, allowedRoles []string) (bool) {
@@ -55,11 +58,15 @@ func CheckCookies(r *http.Request, allowedRoles []string) (bool) {
     sessionId := sessionIdCookie.Value
 
     if(CheckSessionId(username, sessionId)){
-        var roles = GetRolesForUser(username)
-        for _, role := range roles{
-            if(stringInSlice(role, allowedRoles)){
-                return true
+        if(allowedRoles != nil){
+            var roles = GetRolesForUser(username)
+            for _, role := range roles{
+                if(stringInSlice(role, allowedRoles)){
+                    return true
+                }
             }
+        }else{
+            return true;
         }
     }
     return false

@@ -211,7 +211,27 @@ func GetRoleLinkForRole(roleName string) ([]RoleLink) {
 
 }
 
+func GetLinksForUser(username string) ([]Link){
+    startConnection()
+    rows, err := con.Query("SELECT LINK_NAME, LINK_URL FROM portal.LINK_USERNAME_MAP_VW WHERE USERNAME =?", username);
+    checkErr(err)
 
+    var links []Link
+
+    for rows.Next() {
+        var linkURL string
+        //var discard string;
+        var linkName string
+        err = rows.Scan(&linkName, &linkURL)
+        checkErr(err)
+        link := Link{
+          URL: linkURL,
+                Name: linkName,
+            }
+      links = append(links, link)
+    }
+    return links
+}
 
 func GetUserRolesForUser(username string) ([]UserRole){
     startConnection()
