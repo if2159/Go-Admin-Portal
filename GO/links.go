@@ -4,8 +4,6 @@ package main
 import (
 	"html/template"
 	"net/http"
-	//"io/ioutil"
-	//"fmt"
 )
 
 type Link struct {

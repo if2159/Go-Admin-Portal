@@ -259,3 +259,21 @@ func GetUserRolesForUser(username string) ([]UserRole){
     return roles
 
 }
+
+func AdjustLinks(links []string){
+    startConnection()
+    fmt.Println("Deleting")
+    for _, link := range links{
+        _, err := con.Query("DELETE FROM LINKS_REF WHERE LINK_NAME=?", link);
+        checkErr(err)
+    }
+
+}
+
+
+
+func InsertNewLink(linkName, linkUrl string){
+    startConnection()
+    _, err := con.Query("INSERT INTO LINKS_REF(LINK_NAME, LINK_URL) VALUES (?, ?)", linkName, linkUrl);
+    checkErr(err)
+}
