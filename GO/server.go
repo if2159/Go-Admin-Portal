@@ -24,6 +24,12 @@ func main() {
     http.HandleFunc("/ChangeRoleLinks", ChangeRoleLinks)
     http.HandleFunc("/ChangeRoleLinks.html", LoadChangeRoleLinks)
 
+    http.HandleFunc("/CreateLink", CreateLink)
+    http.HandleFunc("/AddLink.html", LoadAddLink)
+
+    http.HandleFunc("/RemoveLinks", RemoveLinks)
+    http.HandleFunc("/RemoveLinks.html", LoadRemoveLinks)
+
     http.HandleFunc("/Links.html", LoadLinks)
     http.HandleFunc("/links.html", LoadLinks)
 

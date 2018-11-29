@@ -43,19 +43,14 @@
 
     </nav>
     <div class="container">
-        <h1>Changing Links for Role: {{.RoleName}}</h1>
+        <h1>Choose Which Links to Remove</h1>
         <ul>
-            <form action="/ChangeRoleLinks?roleName={{.RoleName}}" method="post" name="rolesForm">
-            {{range .RoleLinks}}
-            <div class="form-check">
-                {{if .HasAccess}}
-                        <input type="checkbox" checked="checked" name="{{.LinkName}}">
-                        <label class="form-check-label">{{.LinkName}}</label>
-                {{else}}
-                        <input type="checkbox" name="{{.LinkName}}">
-                        <label class="form-check-label">{{.LinkName}}</label>
-                {{end}}
-            </div>
+            <form action="/RemoveLinks" method="post" name="linksForm">
+            {{range .Links}}
+                <div class="form-check">
+                    <input type="checkbox" name="{{.LinkName}}">
+                    <label class="form-check-label">{{.LinkName}}</label>
+                </div>
             {{end}}
             <input type="submit" value="Submit" class="btn btn-primary"/>
             </form>
