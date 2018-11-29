@@ -42,17 +42,17 @@
         </div>
 
     </nav>
-
-    <h1>Links</h1>
-    <ul>
-        {{range .Links}}
-            <li>
-                <a href="{{.URL}}" target="_blank">
-                    {{.Name}}
-                </a>
-            </li>
-        {{end}}
-    </ul>
-
+    <div class="container">
+        <h1>Links</h1>
+        <ul>
+            {{range .Links}}
+                <li>
+                    <a href="{{.URL}}" target="_blank">
+                        {{.Name}}
+                    </a>
+                </li>
+            {{end}}
+        </ul>
+    </div>
 </body>
 </html>
